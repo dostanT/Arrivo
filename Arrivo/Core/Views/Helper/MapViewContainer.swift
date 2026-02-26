@@ -32,11 +32,11 @@ struct MapViewContainer: View {
                     Annotation(stop.name, coordinate: stop.coordinate) {
                         Image(systemName: "bus.fill")
                             .font(.system(size: LayoutConstants.Icon.small))
-                            .foregroundColor(ColorConstants.background)
+                            .foregroundColor(ColorConstants.foreground)
                             .padding(LayoutConstants.Padding.small)
                             .background(
                                 Circle()
-                                    .fill(ColorConstants.foreground)
+                                    .fill(ColorConstants.background)
                                     .shadow(radius: LayoutConstants.Map.Buttons.locationShadowRadius)
                             )
                     }

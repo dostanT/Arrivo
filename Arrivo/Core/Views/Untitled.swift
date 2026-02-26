@@ -22,6 +22,7 @@ struct Untitled: View {
                           systemImage: untitledVM.selectedTab == .profile ?
                           TabEnum.profile.selectedIconName : TabEnum.profile.iconName)
                 }
+                .toolbarBackground(ColorConstants.background, for: .tabBar)
             
             MapView()
                 .tag(TabEnum.map)
@@ -30,6 +31,8 @@ struct Untitled: View {
                           systemImage: untitledVM.selectedTab == .map ?
                           TabEnum.map.selectedIconName : TabEnum.map.iconName)
                 }
+                .toolbarBackground(ColorConstants.background, for: .tabBar)
+            
             SettingsView()
                 .tag(TabEnum.settings)
                 .tabItem {
@@ -37,7 +40,9 @@ struct Untitled: View {
                           systemImage: untitledVM.selectedTab == .settings ?
                           TabEnum.settings.selectedIconName : TabEnum.settings.iconName)
                 }
+                .toolbarBackground(ColorConstants.background, for: .tabBar)
         }
-        .accentColor(.blue)
+        .accentColor(ColorConstants.foreground)
+        .toolbarBackground(ColorConstants.background, for: .navigationBar)
     }
 }

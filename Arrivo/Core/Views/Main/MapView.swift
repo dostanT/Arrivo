@@ -26,8 +26,8 @@ struct MapView: View {
                         Image(systemName: "magnifyingglass")
                             .font(.title2)
                             .padding()
-                            .background(Color.blue)
-                            .foregroundColor(.white)
+                            .background(ColorConstants.background)
+                            .foregroundColor(ColorConstants.foreground)
                             .clipShape(Circle())
                             .shadow(radius: 5)
                     }
@@ -50,40 +50,48 @@ struct SearchSheetView: View {
     
     var body: some View {
         NavigationStack {
-            List(mapVM.shownStops) { stop in
-                Text(stop.name)
-                    .onTapGesture {
-                        // Убираем фокус с клавиатуры
-                        isSearchFocused = false
-                        
-                        // Центрируем карту
-                        mapVM.toCenter(by: stop.coordinate)
-                        mapVM.selectedCoordinate = stop.coordinate
-                        
-                        // Закрываем sheet с небольшой задержкой
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            ZStack{
+                ColorConstants.background.ignoresSafeArea()
+                List(mapVM.shownStops) { stop in
+                    Text(stop.name)
+                        .onTapGesture {
+                            // Убираем фокус с клавиатуры
+                            isSearchFocused = false
+                            
+                            // Центрируем карту
+                            mapVM.toCenter(by: stop.coordinate)
+                            mapVM.selectedCoordinate = stop.coordinate
+                            
+                            // Закрываем sheet с небольшой задержкой
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                showSheet = false
+                                mapVM.searchText = "" // Очищаем поиск
+                            }
+                        }
+                }
+                .searchable(
+                    text: $mapVM.searchText,
+                    placement: .navigationBarDrawer(
+                        displayMode: .always
+                    )
+                )
+                .focused($isSearchFocused) // Привязываем фокус к поиску
+                .navigationTitle("Остановки")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button("Готово") {
+                            isSearchFocused = false
                             showSheet = false
-                            mapVM.searchText = "" // Очищаем поиск
+                            mapVM.searchText = ""
                         }
                     }
-            }
-            .searchable(text: $mapVM.searchText, placement: .navigationBarDrawer(displayMode: .always))
-            .focused($isSearchFocused) // Привязываем фокус к поиску
-            .navigationTitle("Остановки")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Готово") {
-                        isSearchFocused = false
-                        showSheet = false
-                        mapVM.searchText = ""
-                    }
                 }
-            }
-            .onAppear {
-                // Автоматически показываем клавиатуру при открытии
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    isSearchFocused = true
+                .onAppear {
+                    // Автоматически показываем клавиатуру при открытии
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        isSearchFocused = true
+                    }
                 }
             }
         }
