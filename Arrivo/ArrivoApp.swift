@@ -9,9 +9,15 @@ import SwiftUI
 
 @main
 struct ArrivoApp: App {
+    
+    @StateObject private var untitledVM: UntitledViewModel = .init()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NavigationStack {
+                Untitled()
+            }
+            .environmentObject(untitledVM)
         }
     }
 }
