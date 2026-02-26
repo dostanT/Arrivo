@@ -10,7 +10,17 @@ import SwiftUI
 @main
 struct ArrivoApp: App {
     
-    @StateObject private var untitledVM: UntitledViewModel = .init()
+    @StateObject private var untitledVM: UntitledViewModel
+    @StateObject private var mapVM: MapViewModel
+    
+    init() {
+        let IUntitledVM = UntitledViewModel()
+        let ILocationVM = LocationViewModel()
+        let IMapVM = DependencyContainer.makeMapViewModel(locationService: ILocationVM)
+        
+        _untitledVM = StateObject(wrappedValue: IUntitledVM)
+        _mapVM = StateObject(wrappedValue: IMapVM)
+    }
     
     var body: some Scene {
         WindowGroup {
@@ -18,6 +28,7 @@ struct ArrivoApp: App {
                 Untitled()
             }
             .environmentObject(untitledVM)
+            .environmentObject(mapVM)
         }
     }
 }
