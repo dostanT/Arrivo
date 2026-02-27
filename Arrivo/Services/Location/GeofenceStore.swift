@@ -1,8 +1,7 @@
-import Foundation
 import CoreLocation
+import Foundation
 
 actor GeofenceStore {
-
     private let latKey = "monitoring_latitude"
     private let lonKey = "monitoring_longitude"
     private let dateKey = "monitoring_started_at"
@@ -12,7 +11,6 @@ actor GeofenceStore {
         UserDefaults.standard.set(coordinate.longitude, forKey: lonKey)
         UserDefaults.standard.set(Date(), forKey: dateKey)
     }
-    
 
     func clear() {
         UserDefaults.standard.removeObject(forKey: latKey)

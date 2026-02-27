@@ -7,7 +7,6 @@
 import Foundation
 
 final class AlarmStore {
-
     static let shared = AlarmStore()
 
     private let fileURL: URL

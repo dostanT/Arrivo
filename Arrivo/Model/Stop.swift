@@ -11,13 +11,13 @@ struct Stop: Identifiable {
     let name: String
     let coordinate: CLLocationCoordinate2D
 
-    // ⚡️ Предрассчитанное поле для быстрого поиска
+    /// ⚡️ Предрассчитанное поле для быстрого поиска
     let normalizedName: String
 
     init(id: String, name: String, coordinate: CLLocationCoordinate2D) {
         self.id = id
         self.name = name
         self.coordinate = coordinate
-        self.normalizedName = String(name.lowercased().sorted())
+        normalizedName = String(name.lowercased().sorted())
     }
 }

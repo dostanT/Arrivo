@@ -21,7 +21,7 @@ enum CityStopsSource: String, CaseIterable, Equatable {
     case taldykorgan = "Kazakhstan_Taldykorgan_stops_parsed"
     case temirtau = "Kazakhstan_Temirtau_stops_parsed"
     case uralsk = "Kazakhstan_Uralsk_stops_parsed"
-    
+
     var name: String {
         switch self {
         case .aktau:
@@ -56,5 +56,4 @@ enum CityStopsSource: String, CaseIterable, Equatable {
             return "Уральск"
         }
     }
-
 }

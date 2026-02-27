@@ -1,38 +1,27 @@
 enum TabEnum: String, CaseIterable {
-    case profile = "Profile"
+    case arrivo = "Profile"
     case map = "Map"
     case settings = "Settings"
-    
+
     var displayName: String {
         switch self {
-        case .profile:
-            return "Profile"
+        case .arrivo:
+            return "Arrivo"
         case .map:
             return "Map"
         case .settings:
             return "Settings"
         }
     }
-    
+
     var iconName: String {
         switch self {
-        case .profile:
-            return "person" // неактивная
+        case .arrivo:
+            return "bus.fill"
         case .map:
-            return "map" // неактивная
+            return "map.fill"
         case .settings:
-            return "gearshape" // неактивная
-        }
-    }
-    
-    var selectedIconName: String {
-        switch self {
-        case .profile:
-            return "person.fill" // активная
-        case .map:
-            return "map.fill" // активная
-        case .settings:
-            return "gearshape.fill" // активная
+            return "gear"
         }
     }
 }

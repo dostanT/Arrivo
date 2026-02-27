@@ -7,8 +7,8 @@
 import SwiftUI
 
 enum ColorConstants {
-    static let foreground: Color = Color("Foreground")
-    static let foregroundSec: Color = Color("ForegroundSec")
-    static let background: Color = Color("Background")
-    static let backgroundSec: Color = Color("BackgroundSec")
+    static let foreground: Color = .init("Foreground")
+    static let foregroundSec: Color = .init("ForegroundSec")
+    static let background: Color = .init("Background")
+    static let backgroundSec: Color = .init("BackgroundSec")
 }

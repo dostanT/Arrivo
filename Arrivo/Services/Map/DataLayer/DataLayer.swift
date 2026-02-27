@@ -7,12 +7,14 @@
 import MapKit
 
 // MARK: - Data/Repositories
+
 protocol StopsRepository {
     func loadStops(for city: CityStopsSource) async throws -> [Stop]
 }
 
 // MARK: - Data/Services
-struct CityBounds {
+
+enum CityBounds {
     static let regions: [CityStopsSource: MKCoordinateRegion] = [
         .astana: MKCoordinateRegion(
             center: CLLocationCoordinate2D(latitude: 51.1694, longitude: 71.4491),
@@ -73,13 +75,13 @@ struct CityBounds {
         .uralsk: MKCoordinateRegion(
             center: CLLocationCoordinate2D(latitude: 51.2278, longitude: 51.3865),
             span: MKCoordinateSpan(latitudeDelta: 1.0, longitudeDelta: 1.0)
-        )
+        ),
     ]
 }
 
 // MARK: - Data/FileLoader
-struct StopsFileLoader {
 
+enum StopsFileLoader {
     static func load(from filename: String) async throws -> [Stop] {
         guard let url = Bundle.main.url(forResource: filename, withExtension: "txt") else {
             throw FileError.fileNotFound(filename)
@@ -109,8 +111,8 @@ struct StopsFileLoader {
             let lonString = tokens[i + 2]
 
             if let lat = Double(latString),
-               let lon = Double(lonString) {
-
+               let lon = Double(lonString)
+            {
                 stops.append(
                     Stop(
                         id: "\(name)_\(lat)_\(lon)",
@@ -134,8 +136,8 @@ struct StopsFileLoader {
     }
 }
 
-
 // MARK: - Data/Repository Implementation
+
 final class FileStopsRepository: StopsRepository {
     func loadStops(for city: CityStopsSource) async throws -> [Stop] {
         try await StopsFileLoader.load(from: city.rawValue)

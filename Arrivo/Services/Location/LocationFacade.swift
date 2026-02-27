@@ -7,10 +7,8 @@
 import CoreLocation
 
 actor LocationFacade {
-
     private let store: GeofenceStore
     private let locationClient: LocationManagerClient
-    
 
     init(
         store: GeofenceStore,
@@ -20,7 +18,7 @@ actor LocationFacade {
         self.locationClient = locationClient
     }
 
-    func startMonitoring(coordinate: CLLocationCoordinate2D, radius: CLLocationDistance, id: String) async  {
+    func startMonitoring(coordinate: CLLocationCoordinate2D, radius _: CLLocationDistance, id: String) async {
         let region = CLCircularRegion(
             center: coordinate,
             radius: 400,
@@ -36,13 +34,13 @@ actor LocationFacade {
             await store.save(coordinate: coordinate)
         }
     }
-    
+
     func getMonitoringRegion(id: String) async -> CLRegion? {
         await MainActor.run {
             locationClient.getMonitoringRegion(id: id)
         }
     }
-    
+
     func stopMonitoring(id: String) async {
         await MainActor.run {
             locationClient.stopMonitoring(id: id)
@@ -65,5 +63,4 @@ actor LocationFacade {
         }
         await stopMonitoring()
     }
-
 }

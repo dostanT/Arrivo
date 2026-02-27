@@ -8,7 +8,7 @@ import SwiftUI
 
 struct MarkerView: View {
     @ObservedObject var viewModel: MapViewModel
-    var body: some View{
+    var body: some View {
         ZStack {
             Circle()
                 .fill(Color.red.opacity(LayoutConstants.Map.markerOpacity))
@@ -18,7 +18,7 @@ struct MarkerView: View {
                 )
                 .scaleEffect(viewModel.markerScale)
                 .opacity(viewModel.markerOpacity)
-            
+
             Image(systemName: "mappin.circle.fill")
                 .font(.system(size: LayoutConstants.Map.markerPinFontSize))
                 .foregroundColor(.red)

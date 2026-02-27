@@ -13,8 +13,14 @@ struct AlarmModel: Identifiable, Codable {
     var duration: TimeInterval
     var adjustedRemaining: TimeInterval?
     var label: String?
-    
-    init(id: UUID = UUID(), createdAt: Date, duration: TimeInterval, adjustedRemaining: TimeInterval? = nil, label: String? = nil) {
+
+    init(
+        id: UUID = UUID(),
+        createdAt: Date,
+        duration: TimeInterval,
+        adjustedRemaining: TimeInterval? = nil,
+        label: String? = nil
+    ) {
         self.id = id
         self.createdAt = createdAt
         self.duration = duration

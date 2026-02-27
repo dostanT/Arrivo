@@ -8,13 +8,11 @@
 import Combine
 import Foundation
 
-
 @MainActor
 final class NotificationAlarmViewModel: ObservableObject, ShudelerProtocol {
-    
     let notificationService = NotificationService()
-    
-    func scheduleAlarm(with duration: TimeInterval, label: String) async {
+
+    func scheduleAlarm(with _: TimeInterval, label: String) async {
         Task {
             await notificationService.scheduleAlarm(label: label)
         }

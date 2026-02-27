@@ -1,98 +1,85 @@
-//
-//  MapView.swift
-//  Arrivo
-//
-//  Created by Dostan Turlybek on 26.02.2026.
-//
-
 import SwiftUI
 
 struct MapView: View {
     @EnvironmentObject private var mapVM: MapViewModel
-    @State private var showSheet: Bool = false
-    
+    @State private var showSheet = false
+    @Environment(\.dismiss) var dismiss
+
     var body: some View {
         ZStack {
             MapViewContainer(viewModel: mapVM)
-            
-            // Кнопка для открытия sheet
+
             VStack {
                 Spacer()
-                HStack {
-                    Spacer()
-                    Button {
-                        showSheet.toggle()
-                    } label: {
-                        Image(systemName: "magnifyingglass")
-                            .font(.title2)
-                            .padding()
-                            .background(ColorConstants.background)
-                            .foregroundColor(ColorConstants.foreground)
-                            .clipShape(Circle())
-                            .shadow(radius: 5)
-                    }
-                    .padding()
+
+                if mapVM.selectedCoordinate != nil {
+                    Slider(value: $mapVM.radius, in: 100 ... 1000, step: 100)
+                    StartButton(action: mapVM.startMonitoring)
+                }
+            }
+            .padding(LayoutConstants.Padding.screen)
+        }
+        .alert("Ready", isPresented: $mapVM.showAlert) {
+            Button("OK") { dismiss() }
+        } message: {
+            Text(mapVM.alertMessage)
+        }
+        .ifAvailableiOS26OrLower { $0.toolbarBackground(ColorConstants.background, for: .navigationBar) }
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                Text(mapVM.currentCity.name)
+                    .foregroundStyle(ColorConstants.foreground)
+            }
+
+            ToolbarItem(placement: .topBarTrailing) {
+                NavigationButtonCircleView(imageName: "location.fill") { mapVM.centerToUserLocation() }
+            }
+
+            if !mapVM.startedMonitoringsIDs.isEmpty {
+                ToolbarItem(placement: .topBarTrailing) {
+                    NavigationButtonCircleView(imageName: "bolt.fill") { mapVM.centerToUserLocation() }
+                }
+            }
+
+            ToolbarItem(placement: .topBarTrailing) {
+                NavigationButtonCircleView(
+                    imageName: mapVM.selectedCoordinate != nil ? "xmark" : "magnifyingglass"
+                ) {
+                    if mapVM.selectedCoordinate != nil { mapVM.clearSelection() }
+                    else { showSheet.toggle() }
                 }
             }
         }
+        .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $showSheet) {
             SearchSheetView(showSheet: $showSheet)
         }
     }
 }
 
-// Отдельный View для sheet
-struct SearchSheetView: View {
-    @EnvironmentObject private var mapVM: MapViewModel
-    @Binding var showSheet: Bool
-    @FocusState private var isSearchFocused: Bool
-    @Environment(\.dismiss) private var dismiss
-    
+struct StartButton: View {
+    let action: () -> Void
+
     var body: some View {
-        NavigationStack {
-            ZStack{
-                ColorConstants.background.ignoresSafeArea()
-                List(mapVM.shownStops) { stop in
-                    Text(stop.name)
-                        .onTapGesture {
-                            // Убираем фокус с клавиатуры
-                            isSearchFocused = false
-                            
-                            // Центрируем карту
-                            mapVM.toCenter(by: stop.coordinate)
-                            mapVM.selectedCoordinate = stop.coordinate
-                            
-                            // Закрываем sheet с небольшой задержкой
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                                showSheet = false
-                                mapVM.searchText = "" // Очищаем поиск
-                            }
-                        }
-                }
-                .searchable(
-                    text: $mapVM.searchText,
-                    placement: .navigationBarDrawer(
-                        displayMode: .always
-                    )
-                )
-                .focused($isSearchFocused) // Привязываем фокус к поиску
-                .navigationTitle("Остановки")
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button("Готово") {
-                            isSearchFocused = false
-                            showSheet = false
-                            mapVM.searchText = ""
-                        }
-                    }
-                }
-                .onAppear {
-                    // Автоматически показываем клавиатуру при открытии
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        isSearchFocused = true
-                    }
-                }
+        if #available(iOS 26.0, *) {
+            Button(action: action) {
+                Text("Start")
+                    .foregroundStyle(ColorConstants.foreground)
+                    .font(.system(size: LayoutConstants.FontSize.title3))
+                    .frame(maxWidth: .infinity)
+                    .padding(LayoutConstants.Padding.screen)
+            }
+            .buttonBorderShape(.capsule)
+            .buttonStyle(.glass)
+        } else {
+            Button(action: action) {
+                Text("Start")
+                    .foregroundStyle(ColorConstants.foreground)
+                    .font(.system(size: LayoutConstants.FontSize.title3))
+                    .frame(maxWidth: .infinity)
+                    .padding(LayoutConstants.Padding.screen)
+                    .background(ColorConstants.background)
+                    .clipShape(RoundedRectangle(cornerRadius: LayoutConstants.CornerRadius.large))
             }
         }
     }

@@ -9,7 +9,6 @@ import CoreLocation
 
 @MainActor
 final class LocationViewModel: ObservableObject {
-
     @Published var currentLocation: CLLocation?
     @Published var isAuthorized = false
     @Published var isMonitoringActive = false
@@ -28,18 +27,18 @@ final class LocationViewModel: ObservableObject {
         self.client = client
         self.facade = facade
         if #available(iOS 26.0, *) {
-            self.alarmVM = AlarmViewModel()
+            alarmVM = AlarmViewModel()
         } else {
-            self.alarmVM = NotificationAlarmViewModel()
+            alarmVM = NotificationAlarmViewModel()
         }
         client.delegate = self
         requestWhenInUsesAuthorization()
     }
-    
+
     func getMonitoringRegion(id: String) async -> CLRegion? {
         await facade.getMonitoringRegion(id: id)
     }
-    
+
     func requestWhenInUsesAuthorization() {
         client.requestWhenInUsesAuthorization()
     }
@@ -55,9 +54,9 @@ final class LocationViewModel: ObservableObject {
             isMonitoringActive = true
         }
     }
-    
+
     func stopMonitoringById(id: String) {
-        Task{
+        Task {
             await facade.stopMonitoring(id: id)
         }
     }
@@ -71,19 +70,18 @@ final class LocationViewModel: ObservableObject {
 }
 
 extension LocationViewModel: LocationManagerClientDelegate {
-
     func didUpdate(location: CLLocation) {
         currentLocation = location
     }
-    
-    nonisolated func schudleAlarm()  {
+
+    nonisolated func schudleAlarm() {
         Task {
             await alarmVM.scheduleAlarm(with: 1)
         }
     }
 
     func didEnterRegion() {
-        Task { await facade.didEnterRegion{ [weak self] in
+        Task { await facade.didEnterRegion { [weak self] in
             self?.schudleAlarm()
         }}
         isMonitoringActive = false

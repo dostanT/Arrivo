@@ -1,7 +1,6 @@
 import CoreLocation
 
 final class LocationManagerClient: NSObject, CLLocationManagerDelegate {
-
     private let manager = CLLocationManager()
     weak var delegate: LocationManagerClientDelegate?
 
@@ -12,7 +11,7 @@ final class LocationManagerClient: NSObject, CLLocationManagerDelegate {
         manager.allowsBackgroundLocationUpdates = true
         manager.pausesLocationUpdatesAutomatically = false
     }
-    
+
     func requestWhenInUsesAuthorization() {
         manager.requestWhenInUseAuthorization()
     }
@@ -28,9 +27,9 @@ final class LocationManagerClient: NSObject, CLLocationManagerDelegate {
     func startMonitoring(region: CLCircularRegion) {
         manager.startMonitoring(for: region)
     }
-    
-    func stopMonitoring(id: String) { 
-        manager.monitoredRegions.forEach { region in
+
+    func stopMonitoring(id: String) {
+        for region in manager.monitoredRegions {
             print(region)
             if region.identifier == id {
                 manager.stopMonitoring(for: region)
@@ -39,11 +38,11 @@ final class LocationManagerClient: NSObject, CLLocationManagerDelegate {
     }
 
     func stopAllMonitoring() {
-        manager.monitoredRegions.forEach {
-            manager.stopMonitoring(for: $0)
+        for monitoredRegion in manager.monitoredRegions {
+            manager.stopMonitoring(for: monitoredRegion)
         }
     }
-    
+
     func getMonitoringRegion(id: String) -> CLRegion? {
         manager.monitoredRegions.first { $0.identifier == id }
     }
@@ -56,20 +55,17 @@ final class LocationManagerClient: NSObject, CLLocationManagerDelegate {
 
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         let authorized = manager.authorizationStatus == .authorizedAlways ||
-                         manager.authorizationStatus == .authorizedWhenInUse
+            manager.authorizationStatus == .authorizedWhenInUse
         delegate?.didChangeAuthorization(isAuthorized: authorized)
     }
 
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let last = locations.last {
             delegate?.didUpdate(location: last)
         }
     }
 
-    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+    func locationManager(_: CLLocationManager, didEnterRegion _: CLRegion) {
         delegate?.didEnterRegion()
     }
 }
-
-
-

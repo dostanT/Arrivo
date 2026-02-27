@@ -1,11 +1,11 @@
 import Foundation
 
-// 1️⃣ Создаём обычный actor для выполнения работы
+/// 1️⃣ Создаём обычный actor для выполнения работы
 actor SearchEngineActor {
     // тут внутри будет очередь и методы search
 }
 
-// 2️⃣ Создаём глобальный актор, который использует наш actor
+/// 2️⃣ Создаём глобальный актор, который использует наш actor
 @globalActor
 struct SearchActor: GlobalActor {
     typealias ActorType = SearchEngineActor
@@ -14,7 +14,7 @@ struct SearchActor: GlobalActor {
 
 @SearchActor
 final class SearchEngine {
-    // Все остановки с предрасчитанным normalizedName
+    /// Все остановки с предрасчитанным normalizedName
     private let allStops: [Stop]
 
     // Простой LRU-кэш (максимум 20 запросов)
@@ -22,10 +22,11 @@ final class SearchEngine {
     private let cacheLimit = 20
 
     init(stops: [Stop]) {
-        self.allStops = stops
+        allStops = stops
     }
 
     // MARK: - Публичный API
+
     func search(query: String) async -> [Stop] {
         // Нормализуем запрос (сортируем буквы) – делаем один раз
         let normalizedQuery = String(query.lowercased().sorted())
@@ -50,6 +51,7 @@ final class SearchEngine {
     }
 
     // MARK: - Приватная логика поиска
+
     private func performSearch(normalizedQuery: String) -> [Stop] {
         guard !normalizedQuery.isEmpty else { return [] }
 
@@ -66,7 +68,8 @@ final class SearchEngine {
             // 2. Первая буква должна совпадать (можно убрать, если нужно мягче)
             guard let qFirst = normalizedQuery.first,
                   let sFirst = stop.normalizedName.first,
-                  qFirst == sFirst else {
+                  qFirst == sFirst
+            else {
                 continue
             }
 
@@ -105,6 +108,7 @@ final class SearchEngine {
     }
 
     // MARK: - Быстрый similarity через частоты символов (O(n+m))
+
 //    private func similarity(_ a: String, _ b: String) -> Int {
 //        var freq = [Character: Int]()
 //        for ch in b { freq[ch, default: 0] += 1 }
@@ -120,7 +124,7 @@ final class SearchEngine {
 //        let maxLen = max(a.count, b.count)
 //        return maxLen == 0 ? 0 : matches * 100 / maxLen
 //    }
-    
+
     private func similarity(_ a: String, _ b: String) -> Int {
         let aChars = Array(a)
         let bChars = Array(b)
@@ -131,17 +135,21 @@ final class SearchEngine {
         if m == 0 { return 0 }
 
         // Матрица (n+1)x(m+1)
-        var dp = Array(repeating: Array(repeating: 0, count: m+1), count: n+1)
+        var dp = Array(repeating: Array(repeating: 0, count: m + 1), count: n + 1)
 
-        for i in 0...n { dp[i][0] = i }
-        for j in 0...m { dp[0][j] = j }
+        for i in 0 ... n {
+            dp[i][0] = i
+        }
+        for j in 0 ... m {
+            dp[0][j] = j
+        }
 
-        for i in 1...n {
-            for j in 1...m {
-                if aChars[i-1] == bChars[j-1] {
-                    dp[i][j] = dp[i-1][j-1]
+        for i in 1 ... n {
+            for j in 1 ... m {
+                if aChars[i - 1] == bChars[j - 1] {
+                    dp[i][j] = dp[i - 1][j - 1]
                 } else {
-                    dp[i][j] = 1 + min(dp[i-1][j-1], min(dp[i][j-1], dp[i-1][j]))
+                    dp[i][j] = 1 + min(dp[i - 1][j - 1], min(dp[i][j - 1], dp[i - 1][j]))
                 }
             }
         }
@@ -151,14 +159,14 @@ final class SearchEngine {
         return maxLen == 0 ? 100 : max(0, 100 - distance * 100 / maxLen)
     }
 
-
-    // Очистка кэша (например, при смене города)
+    /// Очистка кэша (например, при смене города)
     func clearCache() {
         cache.removeAll()
     }
 }
 
 // MARK: - Вспомогательная структура для ранжирования
+
 private struct RateModel {
     let rate: Int
     let value: Stop

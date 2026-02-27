@@ -9,26 +9,18 @@ import SwiftUI
 
 @main
 struct ArrivoApp: App {
-    
-    @StateObject private var untitledVM: UntitledViewModel
-    @StateObject private var mapVM: MapViewModel
-    
-    init() {
-        let IUntitledVM = UntitledViewModel()
-        let ILocationVM = LocationViewModel()
-        let IMapVM = DependencyContainer.makeMapViewModel(locationService: ILocationVM)
-        
-        _untitledVM = StateObject(wrappedValue: IUntitledVM)
-        _mapVM = StateObject(wrappedValue: IMapVM)
-    }
-    
+    @StateObject private var untitledVM: UntitledViewModel = .init()
+
     var body: some Scene {
         WindowGroup {
-            NavigationStack {
-                Untitled()
+            Group {
+                if untitledVM.overViewShown {
+                    Untitled()
+                } else {
+                    OnboardingView()
+                }
             }
             .environmentObject(untitledVM)
-            .environmentObject(mapVM)
         }
     }
 }
