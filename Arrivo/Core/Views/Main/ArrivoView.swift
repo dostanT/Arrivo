@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct ArrivoView: View {
+    @EnvironmentObject private var mapVM: MapViewModel
     var body: some View {
         ZStack {
             ColorConstants.background.ignoresSafeArea()
@@ -68,7 +69,13 @@ private extension ArrivoView {
             sectionTitle("Activity")
 
             ArrivoCard(title: "Current Active", icon: "bolt.fill")
-            ArrivoCard(title: "Recent", icon: "clock.fill")
+                .onTapGesture {
+                    mapVM.activeSheet = .startedMonitorings
+                }
+            ArrivoCard(title: "History", icon: "clock.fill")
+                .onTapGesture {
+                    mapVM.activeSheet = .oldMonitorings
+                }
         }
         .padding()
         .background(cardBackground)

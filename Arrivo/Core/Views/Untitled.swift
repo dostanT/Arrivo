@@ -47,11 +47,22 @@ struct Untitled: View {
                     )
                 }
             }
-
             .toolbarBackground(
                 ColorConstants.background,
                 for: .tabBar
             )
+        }
+        .sheet(item: $mapVM.activeSheet) { sheet in
+            Group {
+                switch sheet {
+                case .oldMonitorings:
+                    HistorySheetView()
+
+                case .startedMonitorings:
+                    ActiveSheetView()
+                }
+            }
+            .environmentObject(mapVM)
         }
         .accentColor(ColorConstants.foreground)
         .environmentObject(mapVM)

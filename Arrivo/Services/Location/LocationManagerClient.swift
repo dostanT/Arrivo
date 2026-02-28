@@ -37,6 +37,17 @@ final class LocationManagerClient: NSObject, CLLocationManagerDelegate {
         }
     }
 
+    func getCLCoordinateBy(id: String) -> CLLocationCoordinate2D? {
+        guard
+            let region = manager.monitoredRegions.first(where: { $0.identifier == id }),
+            let circularRegion = region as? CLCircularRegion
+        else {
+            return nil
+        }
+
+        return circularRegion.center
+    }
+
     func stopAllMonitoring() {
         for monitoredRegion in manager.monitoredRegions {
             manager.stopMonitoring(for: monitoredRegion)

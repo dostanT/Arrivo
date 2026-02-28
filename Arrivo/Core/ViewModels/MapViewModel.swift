@@ -24,6 +24,14 @@ final class MapViewModel: ObservableObject {
         }
     }
 
+    @Published var oldMonitoringsCoordinate: [CoordinateModel] = [] {
+        didSet {
+            saveOldMonitorings()
+        }
+    }
+
+    @Published var activeSheet: ActiveSheet?
+
     @Published var searchText: String = ""
     @Published var isSearching: Bool = false
     @Published var radius: CLLocationDistance = 400
@@ -89,6 +97,28 @@ final class MapViewModel: ObservableObject {
         setupBindings()
         loadInitialStops()
         loadstartedMonitoringsIDs()
+        loadOldMonitorings()
+    }
+
+    private func loadOldMonitorings() {
+        guard let data = UserDefaults.standard.data(forKey: "oldMonitoringsCoordinate") else {
+            return
+        }
+
+        do {
+            oldMonitoringsCoordinate = try JSONDecoder().decode([CoordinateModel].self, from: data)
+        } catch {
+            print("❌ Failed to load old monitorings:", error)
+        }
+    }
+
+    private func saveOldMonitorings() {
+        do {
+            let data = try JSONEncoder().encode(oldMonitoringsCoordinate)
+            UserDefaults.standard.set(data, forKey: "oldMonitoringsCoordinate")
+        } catch {
+            print("❌ Failed to save old monitorings:", error)
+        }
     }
 
     func loadstartedMonitoringsIDs() {
@@ -318,14 +348,44 @@ final class MapViewModel: ObservableObject {
         scheduleVisibleStopsUpdate()
     }
 
-    func stopMonitoring(id: String) {
-        startedMonitoringsIDs.removeAll(where: { $0 == id })
+    func updateStartedMonitoringsIDsAndOldMonitoringsCoordinate(id: String? = nil) async {
+        let idsToProcess: [String]
 
-        locationService.stopMonitoringById(id: id)
+        if let id {
+            idsToProcess = [id]
+            startedMonitoringsIDs.removeAll(where: { $0 == id })
+        } else {
+            idsToProcess = startedMonitoringsIDs
+            startedMonitoringsIDs.removeAll()
+        }
+
+        for monitoringID in idsToProcess {
+            guard let coordinate = locationService.getCLCoordinateBy(id: monitoringID) else {
+                continue
+            }
+
+            var model = CoordinateModel(coordinate: coordinate)
+
+            if let nearestStop = await getNearestStopInformation(id: monitoringID) {
+                model.text = nearestStop.name
+            }
+
+            oldMonitoringsCoordinate.append(model)
+        }
+    }
+
+    func stopMonitoring(id: String) {
+        Task {
+            await updateStartedMonitoringsIDsAndOldMonitoringsCoordinate(id: id)
+            locationService.stopMonitoringById(id: id)
+        }
     }
 
     func stopMonitoring() {
-        locationService.stopMonitoring()
+        Task {
+            await updateStartedMonitoringsIDsAndOldMonitoringsCoordinate()
+            locationService.stopMonitoring()
+        }
     }
 
     // MARK: - Monitoring

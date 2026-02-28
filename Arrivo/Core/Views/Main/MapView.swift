@@ -37,7 +37,7 @@ struct MapView: View {
 
             if !mapVM.startedMonitoringsIDs.isEmpty {
                 ToolbarItem(placement: .topBarTrailing) {
-                    NavigationButtonCircleView(imageName: "bolt.fill") { mapVM.centerToUserLocation() }
+                    NavigationButtonCircleView(imageName: "bolt.fill") { mapVM.activeSheet = .startedMonitorings }
                 }
             }
 

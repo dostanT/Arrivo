@@ -35,6 +35,10 @@ final class LocationViewModel: ObservableObject {
         requestWhenInUsesAuthorization()
     }
 
+    func getCLCoordinateBy(id: String) -> CLLocationCoordinate2D? {
+        client.getCLCoordinateBy(id: id)
+    }
+
     func getMonitoringRegion(id: String) async -> CLRegion? {
         await facade.getMonitoringRegion(id: id)
     }
