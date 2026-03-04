@@ -47,15 +47,10 @@ struct SettingsView: View {
                     // MARK: - Legal
 
                     Section(header: Text("Legal")) {
-                        NavigationLink {
-                            Text("Privacy Policy Screen")
-                        } label: {
+                        Link(destination: URL(string: "https://arrivoprivacyandterms.vercel.app/privacy.html")!) {
                             Label("Privacy Policy", systemImage: "lock.shield")
                         }
-
-                        NavigationLink {
-                            Text("Terms Screen")
-                        } label: {
+                        Link(destination: URL(string: "https://arrivoprivacyandterms.vercel.app/terms.html")!) {
                             Label("Terms and Conditions", systemImage: "doc.text")
                         }
                     }
