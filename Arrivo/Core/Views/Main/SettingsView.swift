@@ -16,29 +16,29 @@ struct SettingsView: View {
                         }
 
                         NavigationLink {
-                            Text("How To Add Widget Screen")
+                            Text("Soon")
                         } label: {
                             Label("How to Add Widget", systemImage: "square.grid.2x2")
                         }
                     }
 
                     // MARK: - Support
-
+                    
                     Section(header: Text("Support")) {
                         NavigationLink {
-                            Text("Report Problem Screen")
+                            Text("Soon")
                         } label: {
                             Label("Report a Problem", systemImage: "exclamationmark.bubble")
                         }
 
                         NavigationLink {
-                            Text("Stop Location Error Screen")
+                            Text("Soon")
                         } label: {
                             Label("Bus Stop Location Error", systemImage: "mappin.and.ellipse")
                         }
 
                         NavigationLink {
-                            Text("Stop Name Error Screen")
+                            Text("Soon")
                         } label: {
                             Label("Bus Stop Name Error", systemImage: "pencil")
                         }

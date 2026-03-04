@@ -12,7 +12,7 @@ struct ArrivoView: View {
 
                     activitySection
 
-                    supportSection
+                    //supportSection
                 }
                 .padding(LayoutConstants.Padding.screen)
             }
