@@ -20,7 +20,7 @@ struct ActiveSheetView: View {
                 List {
                     ForEach(mapVM.startedMonitoringsIDs, id: \.self) { id in
                         Label(
-                            stopNames[id] ?? "Загрузка…",
+                            stopNames[id] ?? "Loading…",
                             systemImage: "bus.fill"
                         )
                         .foregroundStyle(ColorConstants.foreground)

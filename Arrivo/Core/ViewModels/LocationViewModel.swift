@@ -19,6 +19,7 @@ final class LocationViewModel: ObservableObject {
 
     init() {
         let client = LocationManagerClient()
+
         let facade = LocationFacade(
             store: GeofenceStore(),
             locationClient: client
@@ -26,11 +27,13 @@ final class LocationViewModel: ObservableObject {
 
         self.client = client
         self.facade = facade
+
         if #available(iOS 26.0, *) {
             alarmVM = AlarmViewModel()
         } else {
             alarmVM = NotificationAlarmViewModel()
         }
+
         client.delegate = self
         requestWhenInUsesAuthorization()
     }
@@ -43,34 +46,34 @@ final class LocationViewModel: ObservableObject {
         await facade.getMonitoringRegion(id: id)
     }
 
-    func requestWhenInUsesAuthorization() {
-        client.requestWhenInUsesAuthorization()
-    }
-
-    func requestPermission() {
-        client.requestAlwaysAuthorization()
-    }
-
-    func startMonitoring(at coordinate: CLLocationCoordinate2D, radius: CLLocationDistance, id: String) {
-        requestPermission()
-        Task {
-            await facade.startMonitoring(coordinate: coordinate, radius: radius, id: id)
-            isMonitoringActive = true
-        }
-    }
+//    func requestWhenInUsesAuthorization() {
+//        client.requestWhenInUsesAuthorization()
+//    }
+//
+//    func requestPermission() {
+//        client.requestAlwaysAuthorization()
+//    }
+//
+//    func startMonitoring(at coordinate: CLLocationCoordinate2D, radius: CLLocationDistance, id: String) {
+//        requestPermission()
+//        Task {
+//            await facade.startMonitoring(coordinate: coordinate, radius: radius, id: id)
+//            isMonitoringActive = true
+//        }
+//    }
 
     func stopMonitoringById(id: String) {
         Task {
             await facade.stopMonitoring(id: id)
         }
     }
-
-    func stopMonitoring() {
-        Task {
-            await facade.stopMonitoring()
-            isMonitoringActive = false
-        }
-    }
+//
+//    func stopMonitoring() {
+//        Task {
+//            await facade.stopMonitoring()
+//            isMonitoringActive = false
+//        }
+//    }
 }
 
 extension LocationViewModel: LocationManagerClientDelegate {
@@ -85,16 +88,61 @@ extension LocationViewModel: LocationManagerClientDelegate {
     }
 
     func didEnterRegion() {
-        Task { await facade.didEnterRegion { [weak self] in
-            self?.schudleAlarm()
-        }}
+        Task {
+            await facade.didEnterRegion { [weak self] in
+                self?.schudleAlarm()
+            }
+        }
+
         isMonitoringActive = false
     }
 
     func didChangeAuthorization(isAuthorized: Bool) {
         self.isAuthorized = isAuthorized
+
         if isAuthorized {
-            client.startUpdatingLocation()
+            client.requestCurrentLocation()
+        }
+    }
+}
+
+@MainActor
+extension LocationViewModel {
+    func requestWhenInUsesAuthorization() {
+        client.requestWhenInUsesAuthorization()
+    }
+
+//    func requestPermission() {
+//        client.requestAlwaysAuthorization()
+//    }
+
+    /// получить текущую локацию
+    func requestCurrentLocation() {
+        client.requestCurrentLocation()
+    }
+
+    func startMonitoring(
+        at coordinate: CLLocationCoordinate2D,
+        radius: CLLocationDistance,
+        id: String
+    ) {
+//        requestPermission()
+
+        Task {
+            await facade.startMonitoring(
+                coordinate: coordinate,
+                radius: radius,
+                id: id
+            )
+
+            isMonitoringActive = true
+        }
+    }
+
+    func stopMonitoring() {
+        Task {
+            await facade.stopMonitoring()
+            isMonitoringActive = false
         }
     }
 }

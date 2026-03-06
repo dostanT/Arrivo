@@ -12,7 +12,7 @@ struct ArrivoView: View {
 
                     activitySection
 
-                    //supportSection
+                    // supportSection
                 }
                 .padding(LayoutConstants.Padding.screen)
             }
@@ -66,13 +66,13 @@ private extension ArrivoView {
 
     var activitySection: some View {
         VStack(alignment: .leading, spacing: 16) {
-            sectionTitle("Activity")
+            sectionTitle(String(localized:"Activity"))
 
-            ArrivoCard(title: "Current Active", icon: "bolt.fill")
+            ArrivoCard(title: String(localized:"Current Active"), icon: "bolt.fill")
                 .onTapGesture {
                     mapVM.activeSheet = .startedMonitorings
                 }
-            ArrivoCard(title: "History", icon: "clock.fill")
+            ArrivoCard(title: String(localized:"History"), icon: "clock.fill")
                 .onTapGesture {
                     mapVM.activeSheet = .oldMonitorings
                 }

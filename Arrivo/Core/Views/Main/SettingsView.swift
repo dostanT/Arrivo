@@ -23,7 +23,7 @@ struct SettingsView: View {
                     }
 
                     // MARK: - Support
-                    
+
                     Section(header: Text("Support")) {
                         NavigationLink {
                             Text("Soon")

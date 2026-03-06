@@ -219,7 +219,7 @@ final class MapViewModel: ObservableObject {
 
         searchEngine = await SearchEngine(stops: allStops)
 
-        print("✅ Загружены остановки для города: \(city.rawValue), количество: \(allStops.count)")
+        print("✅ Loaded stops for city: \(city.rawValue), count: \(allStops.count)")
 
         await updateVisibleStops()
     }

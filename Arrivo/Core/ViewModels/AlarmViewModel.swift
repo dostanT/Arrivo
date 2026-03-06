@@ -9,7 +9,7 @@ import AlarmKit
 import Combine
 import SwiftUI
 
-// MARK: - AlarmViewModel (UI слой, ObservableObject)
+// MARK: - AlarmViewModel (UI Layer, ObservableObject)
 
 @available(iOS 26.0, *)
 @MainActor
@@ -82,7 +82,7 @@ final class AlarmViewModel: ObservableObject, ShudelerProtocol {
     }
 }
 
-// MARK: - FileStorageService остается таким же
+// MARK: - FileStorageService remains the same
 
 actor FileStorageService {
     private let fileManager = FileManager.default

@@ -130,11 +130,11 @@ struct OnboardingView: View {
 
     var buttonTitle: String {
         switch selectedPage {
-        case .one: "Get Started"
-        case .two: "Learn More"
-        case .three: "Next"
-        case .four: "Great"
-        case .five: "I’m Ready"
+        case .one: String(localized:"Get Started")
+        case .two: String(localized:"Learn More")
+        case .three: String(localized:"Next")
+        case .four: String(localized:"Great")
+        case .five: String(localized:"I’m Ready")
         }
     }
 
@@ -158,43 +158,29 @@ struct OnboardingView: View {
 
     /// Example pages in English
     var firstPage: some View {
-        TitleLabelOverviewText("""
-        Tired of
-        missing
-        your stops?
-        """)
+        TitleLabelOverviewText(String(localized: .tiredOfMissingYourStops))
     }
 
     var secondPage: some View {
-        TitleLabelOverviewText("""
-        With us,
-        you'll never
-        oversleep
-        """)
+        TitleLabelOverviewText(String(localized:.withUsYoullNeverOversleep))
     }
 
     var thirdPage: some View {
-        TitleLabelOverviewText("""
-        We need
-        permission to
-        access usage
-        """)
+        TitleLabelOverviewText(String(localized:.weNeedPermissionToAccessUsage))
     }
 
     var fourthPage: some View {
-        TitleLabelOverviewText("""
-        Perfect!
-        Now only a
-        little remains
-        """)
+        TitleLabelOverviewText(String(localized: .perfectNowOnlyALittleRemains))
     }
 
     var fifthPage: some View {
-        TitleLabelOverviewText("""
-        Would you like
-        to complete
-        the tutorial?
-        """)
+//        TitleLabelOverviewText("""
+//        Would you like
+//        to complete
+//        the tutorial?
+//        """)
+        
+        TitleLabelOverviewText(String(localized: .thereIsNoTutorial))
     }
 
     func requestAll() {
