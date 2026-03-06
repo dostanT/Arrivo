@@ -132,7 +132,7 @@ struct OnboardingView: View {
         switch selectedPage {
         case .one: "Get Started"
         case .two: "Learn More"
-        case .three: "Allow"
+        case .three: "Next"
         case .four: "Great"
         case .five: "I’m Ready"
         }
