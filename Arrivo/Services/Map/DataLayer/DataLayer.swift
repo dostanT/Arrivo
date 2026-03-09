@@ -68,10 +68,6 @@ enum CityBounds {
             center: CLLocationCoordinate2D(latitude: 45.0156, longitude: 78.3739),
             span: MKCoordinateSpan(latitudeDelta: 1.0, longitudeDelta: 1.0)
         ),
-        .temirtau: MKCoordinateRegion(
-            center: CLLocationCoordinate2D(latitude: 50.0549, longitude: 72.9647),
-            span: MKCoordinateSpan(latitudeDelta: 1.0, longitudeDelta: 1.0)
-        ),
         .uralsk: MKCoordinateRegion(
             center: CLLocationCoordinate2D(latitude: 51.2278, longitude: 51.3865),
             span: MKCoordinateSpan(latitudeDelta: 1.0, longitudeDelta: 1.0)

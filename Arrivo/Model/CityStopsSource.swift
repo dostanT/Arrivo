@@ -11,7 +11,7 @@ enum CityStopsSource: String, CaseIterable, Equatable {
     case almaty = "Kazakhstan_Almaty_stops_parsed"
     case astana = "Kazakhstan_Astana_stops_parsed"
     case atyrau = "Kazakhstan_Atyrau_stops_parsed"
-    case karaganda = "Kazakhstan_Karaganda_stops_parsed"
+    case karaganda = "Kazakhstan_Karaganda_Temirtau_stops_parsed"
     case kokshetau = "Kazakhstan_Kokshetau_stops_parsed"
     case kostanaj = "Kazakhstan_Kostanaj_stops_parsed"
     case pavlodar = "Kazakhstan_Pavlodar_stops_parsed"
@@ -19,7 +19,6 @@ enum CityStopsSource: String, CaseIterable, Equatable {
     case semej = "Kazakhstan_Semej_stops_parsed"
     case shchuchinsk = "Kazakhstan_Shchuchinsk_stops_parsed"
     case taldykorgan = "Kazakhstan_Taldykorgan_stops_parsed"
-    case temirtau = "Kazakhstan_Temirtau_stops_parsed"
     case uralsk = "Kazakhstan_Uralsk_stops_parsed"
 
     var name: String {
@@ -35,7 +34,7 @@ enum CityStopsSource: String, CaseIterable, Equatable {
         case .atyrau:
             return "Атырау"
         case .karaganda:
-            return "Караганда"
+            return "Караганда-Темиртау"
         case .kokshetau:
             return "Кокшетау"
         case .kostanaj:
@@ -50,8 +49,6 @@ enum CityStopsSource: String, CaseIterable, Equatable {
             return "Щучинск"
         case .taldykorgan:
             return "Талдыкорган"
-        case .temirtau:
-            return "Темиртау"
         case .uralsk:
             return "Уральск"
         }
