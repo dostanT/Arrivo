@@ -118,7 +118,7 @@ final class LocationManagerClient: NSObject, CLLocationManagerDelegate {
         }
         let circular = region as? CLCircularRegion
         if let circular {
-            let newOldData: CoordinateModel = CoordinateModel(coordinate: circular.center)
+            let newOldData = CoordinateModel(coordinate: circular.center)
             oldData.append(newOldData)
             do {
                 let data = try JSONEncoder().encode(oldData)
@@ -130,8 +130,8 @@ final class LocationManagerClient: NSObject, CLLocationManagerDelegate {
 
         delegate?.didEnterRegion()
     }
-    
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+
+    func locationManager(_: CLLocationManager, didFailWithError error: Error) {
         print("Location error:", error)
     }
 }

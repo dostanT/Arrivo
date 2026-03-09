@@ -130,11 +130,11 @@ struct OnboardingView: View {
 
     var buttonTitle: String {
         switch selectedPage {
-        case .one: String(localized:"Get Started")
-        case .two: String(localized:"Learn More")
-        case .three: String(localized:"Next")
-        case .four: String(localized:"Great")
-        case .five: String(localized:"I’m Ready")
+        case .one: String(localized: "Get Started")
+        case .two: String(localized: "Learn More")
+        case .three: String(localized: "Next")
+        case .four: String(localized: "Great")
+        case .five: String(localized: "I’m Ready")
         }
     }
 
@@ -162,11 +162,11 @@ struct OnboardingView: View {
     }
 
     var secondPage: some View {
-        TitleLabelOverviewText(String(localized:.withUsYoullNeverOversleep))
+        TitleLabelOverviewText(String(localized: .withUsYoullNeverOversleep))
     }
 
     var thirdPage: some View {
-        TitleLabelOverviewText(String(localized:.weNeedPermissionToAccessUsage))
+        TitleLabelOverviewText(String(localized: .weNeedPermissionToAccessUsage))
     }
 
     var fourthPage: some View {
@@ -179,7 +179,7 @@ struct OnboardingView: View {
 //        to complete
 //        the tutorial?
 //        """)
-        
+
         TitleLabelOverviewText(String(localized: .thereIsNoTutorial))
     }
 

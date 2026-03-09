@@ -66,13 +66,13 @@ private extension ArrivoView {
 
     var activitySection: some View {
         VStack(alignment: .leading, spacing: 16) {
-            sectionTitle(String(localized:"Activity"))
+            sectionTitle(String(localized: "Activity"))
 
-            ArrivoCard(title: String(localized:"Current Active"), icon: "bolt.fill")
+            ArrivoCard(title: String(localized: "Current Active"), icon: "bolt.fill")
                 .onTapGesture {
                     mapVM.activeSheet = .startedMonitorings
                 }
-            ArrivoCard(title: String(localized:"History"), icon: "clock.fill")
+            ArrivoCard(title: String(localized: "History"), icon: "clock.fill")
                 .onTapGesture {
                     mapVM.activeSheet = .oldMonitorings
                 }

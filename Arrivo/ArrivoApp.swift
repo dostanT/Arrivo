@@ -29,7 +29,7 @@ struct ArrivoApp: App {
  todo
  -Ringtone
  -Tutorial
- 
+
  -Launch Screen
  -Notification
  -Widget

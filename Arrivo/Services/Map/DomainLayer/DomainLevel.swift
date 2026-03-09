@@ -116,7 +116,7 @@ enum ZoomLevel: Sendable {
             self = .street
         } else if delta < 0.17 {
             self = .district
-        } else if delta < 2.7{
+        } else if delta < 2.7 {
             self = .city
         } else {
             self = .noFilter
@@ -141,7 +141,7 @@ enum ZoomLevel: Sendable {
 
     var maxDistanceMeters: Double {
         switch self {
-        case .noFilter: return 100000
+        case .noFilter: return 100_000
         case .city: return 20000
         case .district: return 5000
         case .street: return 1000
