@@ -35,6 +35,7 @@ struct ArrivoApp: App {
  -Report Porblem
  -Support Me
  -Haptics
+ -Rate(AppStore)
  */
 
 /*
