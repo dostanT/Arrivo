@@ -29,18 +29,17 @@ struct ArrivoApp: App {
  todo
  -Ringtone
  -Tutorial
-
  -Launch Screen
- -Notification
  -Widget
  -Dynamic Island
  -Report Porblem
  -Support Me
- -
+ -Haptics
  */
 
 /*
  done
  -Opstimization
  -Kazakhstan + Temirtau
+ -Notification
  */
