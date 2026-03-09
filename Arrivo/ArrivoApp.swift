@@ -36,6 +36,7 @@ struct ArrivoApp: App {
  -Support Me
  -Haptics
  -Rate(AppStore)
+ -AppIcon(Ring at the topTrailing)
  */
 
 /*
