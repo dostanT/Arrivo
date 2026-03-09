@@ -24,3 +24,18 @@ struct ArrivoApp: App {
         }
     }
 }
+
+/*
+ todo
+ -Ringtone
+ -Opstimization
+ -Tutorial
+ -Kazakhstan + Temirtau
+ -Launch Screen
+ -Notification
+ -Widget
+ -Dynamic Island
+ -Report Porblem
+ -Support Me
+ -
+ */
