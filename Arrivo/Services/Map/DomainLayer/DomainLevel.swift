@@ -105,23 +105,27 @@ func regionContains(
 // MARK: - Zoom Level (Sendable, без MainActor)
 
 enum ZoomLevel: Sendable {
-    case city // delta > 0.15
-    case district // delta 0.05-0.15
-    case street // delta < 0.05
+    case noFilter
+    case city // delta > 0.17 - 0.27
+    case district // delta 0.07-0.17
+    case street // delta < 0.07
 
     init(from span: MKCoordinateSpan) {
         let delta = span.latitudeDelta
-        if delta < 0.05 {
+        if delta < 0.07 {
             self = .street
-        } else if delta < 0.15 {
+        } else if delta < 0.17 {
             self = .district
-        } else {
+        } else if delta < 2.7{
             self = .city
+        } else {
+            self = .noFilter
         }
     }
 
     var thinningStep: Int {
         switch self {
+        case .noFilter: return 1
         case .city: return 10
         case .district: return 5
         case .street: return 1
@@ -130,13 +134,14 @@ enum ZoomLevel: Sendable {
 
     var shouldFilterByDistance: Bool {
         switch self {
-        case .city, .district: return true
+        case .city, .district, .noFilter: return true
         case .street: return false
         }
     }
 
     var maxDistanceMeters: Double {
         switch self {
+        case .noFilter: return 100000
         case .city: return 20000
         case .district: return 5000
         case .street: return 1000

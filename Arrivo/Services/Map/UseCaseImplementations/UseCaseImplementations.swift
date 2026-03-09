@@ -40,6 +40,9 @@ final class FilterVisibleStopsUseCaseImpl: FilterVisibleStopsUseCase {
 
         // Вычисляем все данные на MainActor ДО перехода в background
         let zoomLevel = ZoomLevel(from: mapState.span)
+        if zoomLevel == .noFilter {
+            return []
+        }
         let centerLocation = CLLocation(
             latitude: mapState.center.latitude,
             longitude: mapState.center.longitude

@@ -28,7 +28,6 @@ struct ArrivoApp: App {
 /*
  todo
  -Ringtone
- -Opstimization
  -Tutorial
  -Kazakhstan + Temirtau
  -Launch Screen
@@ -38,4 +37,9 @@ struct ArrivoApp: App {
  -Report Porblem
  -Support Me
  -
+ */
+
+/*
+ done
+ -Opstimization
  */
