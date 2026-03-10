@@ -34,8 +34,6 @@ struct ArrivoApp: App {
  -Dynamic Island
  -Report Porblem
  -Support Me
- -Haptics
- -Rate(AppStore)
  -AppIcon(Ring at the topTrailing)
  */
 
@@ -44,4 +42,6 @@ struct ArrivoApp: App {
  -Opstimization
  -Kazakhstan + Temirtau
  -Notification
+ -Haptics
+ -Rate(AppStore)
  */

@@ -34,6 +34,7 @@ final class UntitledViewModel: ObservableObject {
             Task {
                 await scheduleNotification()
             }
+            requestRate()
         }
     }
 
@@ -45,6 +46,11 @@ final class UntitledViewModel: ObservableObject {
 }
 
 extension UntitledViewModel {
+    func requestRate() {
+        if launchCount % 15 == 0 {
+            RateService.request()
+        }
+    }
     func scheduleNotification() async {
         notificationService = .init()
         notificationService?.cancelNotifications()
