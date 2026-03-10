@@ -268,6 +268,7 @@ final class MapViewModel: ObservableObject {
         withAnimation {
             selectedCoordinate = coordinate
             animateMarkerAppearance()
+            HapticService.shared.impact(.light)
         }
     }
 
@@ -303,6 +304,7 @@ final class MapViewModel: ObservableObject {
         guard let location = locationService.currentLocation else {
             alertMessage = String(localized: "Failed to determine location")
             showAlert = true
+            HapticService.shared.notification(.error)
             return
         }
 
@@ -322,6 +324,7 @@ final class MapViewModel: ObservableObject {
                 await updateVisibleStops()
             }
         }
+        HapticService.shared.notification(.success)
     }
 
     func handleCameraChange(_ context: MapCameraUpdateContext) {
@@ -378,13 +381,16 @@ final class MapViewModel: ObservableObject {
         Task {
             await updateStartedMonitoringsIDsAndOldMonitoringsCoordinate(id: id)
             locationService.stopMonitoringById(id: id)
+            HapticService.shared.impact(.light)
         }
+       
     }
 
     func stopMonitoring() {
         Task {
             await updateStartedMonitoringsIDsAndOldMonitoringsCoordinate()
             locationService.stopMonitoring()
+            HapticService.shared.impact(.light)
         }
     }
 
@@ -393,6 +399,7 @@ final class MapViewModel: ObservableObject {
     func startMonitoring() {
         guard let coordinate = selectedCoordinate else {
             alertMessage = String(localized: "Select a point first")
+            HapticService.shared.notification(.error)
             showAlert = true
             return
         }
@@ -401,6 +408,7 @@ final class MapViewModel: ObservableObject {
 
         locationService.startMonitoring(at: coordinate, radius: radius, id: id)
         alertMessage = String(localized: "Monitoring started")
+        HapticService.shared.notification(.success)
         showAlert = true
 
         saveLastSelectedCoordinate(coordinate)

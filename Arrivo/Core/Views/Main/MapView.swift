@@ -14,6 +14,9 @@ struct MapView: View {
 
                 if mapVM.selectedCoordinate != nil {
                     Slider(value: $mapVM.radius, in: 100 ... 1000, step: 100)
+                        .onChange(of: mapVM.radius) { _, _ in
+                            HapticService.shared.impact(.soft)
+                        }
                     StartButton(action: mapVM.startMonitoring)
                 }
             }

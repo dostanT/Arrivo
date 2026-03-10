@@ -30,8 +30,10 @@ final class UntitledViewModel: ObservableObject {
         launchCount += 1
         defaults.set(launchCount, forKey: "launchCount")
 
-        Task {
-            await scheduleNotification()
+        if overViewShown {
+            Task {
+                await scheduleNotification()
+            }
         }
     }
 

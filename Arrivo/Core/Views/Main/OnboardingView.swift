@@ -6,8 +6,10 @@
 //
 
 import SwiftUI
+import Combine
 
 enum OnboardingPage {
+    case zero      // 👈 Новая пустая страница
     case one
     case two
     case three
@@ -42,6 +44,7 @@ struct ButtonOverviewNext: View {
 struct BusOnRoadSideView: View {
     let bus: String = "BusFront"
     @State private var offset: CGFloat = 0
+    let maxTime: Double = 2.0
 
     var body: some View {
         GeometryReader { geo in
@@ -60,9 +63,10 @@ struct BusOnRoadSideView: View {
             .onAppear {
                 offset = -geo.size.width / 2 - 240 // старт за левым краем
 
-                withAnimation(.linear(duration: 2)) {
+                withAnimation(.linear(duration: maxTime)) {
                     offset = geo.size.width / 2 + 240 // финиш за правым краем
                 }
+                HapticService.shared.wave(duration: maxTime)
             }
         }
         .frame(height: 150)
@@ -70,7 +74,7 @@ struct BusOnRoadSideView: View {
 }
 
 struct OnboardingView: View {
-    @State private var selectedPage: OnboardingPage = .one
+    @State private var selectedPage: OnboardingPage = .zero  // 👈 Стартуем с нулевой страницы
     @EnvironmentObject private var untitledVM: UntitledViewModel
 
     @State private var locationDummyRequester: LocationManagerClient? = nil
@@ -87,6 +91,7 @@ struct OnboardingView: View {
                 Group {
                     ZStack {
                         switch selectedPage {
+                        case .zero: emptyPage      // 👈 Новая пустая страница
                         case .one: firstPage
                         case .two: secondPage
                         case .three: thirdPage
@@ -98,6 +103,8 @@ struct OnboardingView: View {
 
                     Group {
                         switch selectedPage {
+                        case .zero:
+                            Color.clear.frame(height: 300)  // 👈 Пустое место для zero страницы
                         case .one: BusOnRoadSideView()
                         case .two: PhoneWithWave()
                         case .three: Effect3D(
@@ -121,6 +128,7 @@ struct OnboardingView: View {
                 Spacer()
 
                 ButtonOverviewNext(text: buttonTitle) {
+                    HapticService.shared.impact(.light)
                     next()
                 }
             }
@@ -130,6 +138,7 @@ struct OnboardingView: View {
 
     var buttonTitle: String {
         switch selectedPage {
+        case .zero: String(localized: "Start")      // 👈 Кнопка для пустой страницы
         case .one: String(localized: "Get Started")
         case .two: String(localized: "Learn More")
         case .three: String(localized: "Next")
@@ -141,6 +150,7 @@ struct OnboardingView: View {
     func next() {
         withAnimation(.easeInOut) {
             switch selectedPage {
+            case .zero: selectedPage = .one          // 👈 Переход с нулевой на первую
             case .one: selectedPage = .two
             case .two: selectedPage = .three
             case .three: selectedPage = .four
@@ -153,6 +163,17 @@ struct OnboardingView: View {
             requestAll()
         } else if selectedPage == .five {
             reolacateAll()
+        }
+    }
+    
+    // 👈 Новая пустая страница
+    var emptyPage: some View {
+        VStack(spacing: 20) {
+            // Можно добавить логотип или просто оставить пустым
+            Image(systemName: "hand.wave.fill")
+                .font(.system(size: 80))
+                .foregroundStyle(ColorConstants.foreground)
+                .opacity(0.3)
         }
     }
 
@@ -174,12 +195,6 @@ struct OnboardingView: View {
     }
 
     var fifthPage: some View {
-//        TitleLabelOverviewText("""
-//        Would you like
-//        to complete
-//        the tutorial?
-//        """)
-
         TitleLabelOverviewText(String(localized: .thereIsNoTutorial))
     }
 
@@ -255,6 +270,7 @@ struct Effect3D: View {
             }
     }
 }
+
 
 private struct Effect3DModifier: AnimatableModifier {
     let symbols: [String]
@@ -354,6 +370,7 @@ private struct Effect3DModifier: AnimatableModifier {
 struct PhoneWithWave: View {
     @State private var animate = false
     @State private var shake = false
+    @StateObject private var PhoneWithWaveHaptic: PhoneWithWaveHaptic = .init()
 
     let phone: String = "Phone"
 
@@ -377,6 +394,21 @@ struct PhoneWithWave: View {
             animate = true
             shake = true
         }
+    }
+}
+
+@MainActor
+final class PhoneWithWaveHaptic: ObservableObject {
+
+    init() {
+        startToVibrate()
+    }
+    
+    func startToVibrate() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.08, execute: { [weak self] in
+            self?.startToVibrate()
+            HapticService.shared.impact(.soft)
+        })
     }
 }
 

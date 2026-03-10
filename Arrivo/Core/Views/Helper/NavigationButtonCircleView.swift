@@ -14,6 +14,7 @@ struct NavigationButtonCircleView: View {
     var body: some View {
         Button {
             action()
+            HapticService.shared.impact(.light)
         } label: {
             Image(systemName: imageName)
                 .font(
