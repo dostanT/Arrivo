@@ -9,7 +9,8 @@ import SwiftUI
 
 @main
 struct ArrivoApp: App {
-    @StateObject private var untitledVM: UntitledViewModel = .init()
+    @StateObject private var untitledVM = DependencyContainer.makeUntitledViewModel()
+    @StateObject private var onboardingVM = DependencyContainer.makeOnboardingViewModel()
 
     var body: some Scene {
         WindowGroup {
@@ -17,7 +18,7 @@ struct ArrivoApp: App {
                 if untitledVM.overViewShown {
                     Untitled()
                 } else {
-                    OnboardingView()
+                    OnboardingView(onboardingViewModel: onboardingVM)
                 }
             }
             .environmentObject(untitledVM)
