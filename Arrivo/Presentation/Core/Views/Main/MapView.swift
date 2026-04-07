@@ -11,8 +11,14 @@ struct MapView: View {
 
             VStack {
                 Spacer()
-
+                
                 if mapVM.selectedCoordinate != nil {
+                    HStack {
+                        Spacer()
+                        CircleButton(imageName: "checkmark") {
+                            print("Check")
+                        }
+                    }
                     Slider(value: $mapVM.radius, in: 100 ... 1000, step: 100)
                         .onChange(of: mapVM.radius) { _, _ in
                             mapVM.onRadiusSliderChanged()
@@ -87,6 +93,32 @@ struct StartButton: View {
                     .font(.system(size: LayoutConstants.FontSize.title3))
                     .frame(maxWidth: .infinity)
                     .padding(LayoutConstants.Padding.screen)
+                    .background(ColorConstants.background)
+                    .clipShape(RoundedRectangle(cornerRadius: LayoutConstants.CornerRadius.large))
+            }
+        }
+    }
+}
+
+struct CircleButton: View {
+    let imageName: String
+    let action: () -> Void
+    var body: some View {
+        if #available(iOS 26.0, *) {
+            Button(action: action) {
+                Image(systemName: imageName)
+                    .foregroundStyle(ColorConstants.foreground)
+                    .font(.system(size: LayoutConstants.FontSize.title3))
+                    .frame(width: 32, height: 32)
+            }
+            .buttonBorderShape(.circle)
+            .buttonStyle(.glass)
+        } else {
+            Button(action: action) {
+                Image(systemName: imageName)
+                    .foregroundStyle(ColorConstants.foreground)
+                    .font(.system(size: LayoutConstants.FontSize.title3))
+                    .frame(width: 32, height: 32)
                     .background(ColorConstants.background)
                     .clipShape(RoundedRectangle(cornerRadius: LayoutConstants.CornerRadius.large))
             }
