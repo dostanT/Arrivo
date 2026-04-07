@@ -54,9 +54,14 @@ struct Untitled: View {
                 switch sheet {
                 case .oldMonitorings:
                     HistorySheetView()
-
                 case .startedMonitorings:
                     ActiveSheetView()
+                case .melodyChoose:
+                    AudioPicker { url in
+                        mapVM.saveMelodyURL(url: url)
+                    }
+                case .reportProblem:
+                    EmptyView()
                 }
             }
             .environmentObject(mapVM)

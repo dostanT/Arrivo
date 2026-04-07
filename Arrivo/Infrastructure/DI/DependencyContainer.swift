@@ -85,6 +85,10 @@ enum DependencyContainer {
         let buildGrid = BuildStopGridUseCaseImpl()
         let monitoringPersistence = MonitoringPersistenceUseCaseImpl(storage: storage)
         let findNearest = FindNearestStopUseCaseImpl()
+        
+        let melodyURLRepository: MelodyURLRepositoryProtocol = MelodyURLRepository()
+        let loadMelodyURLUseCase: LoadMelodyURLUseCase = LoadMelodyURLUseCaseImpl(repository: melodyURLRepository)
+        let saveMelodyURLUseCase: SaveMelodyURLUseCase = SaveMelodyURLUseCaseImpl(repository: melodyURLRepository)
 
         return MapViewModel(
             locationCoordination: locationCoordination,
@@ -95,7 +99,9 @@ enum DependencyContainer {
             buildStopGridUseCase: buildGrid,
             playHapticUseCase: playHaptic,
             monitoringPersistence: monitoringPersistence,
-            findNearestStopUseCase: findNearest
+            findNearestStopUseCase: findNearest,
+            loadMelodyURLUseCase: loadMelodyURLUseCase,
+            saveMelodyURLUseCase: saveMelodyURLUseCase
         )
     }
 }

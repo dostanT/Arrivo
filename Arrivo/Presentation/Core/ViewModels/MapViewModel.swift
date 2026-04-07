@@ -41,6 +41,8 @@ final class MapViewModel: ObservableObject {
 
     @Published var markerScale = 1.0
     @Published var markerOpacity = 0.0
+    
+    @Published var melodyURL: URL? = nil
 
     private let locationCoordination: LocationCoordinationUseCase
     private let loadStopsUseCase: LoadStopsUseCase
@@ -51,6 +53,9 @@ final class MapViewModel: ObservableObject {
     private let playHapticUseCase: PlayHapticFeedbackUseCase
     private let monitoringPersistence: MonitoringPersistenceUseCase
     private let findNearestStopUseCase: FindNearestStopUseCase
+    private let loadMelodyURLUseCase: LoadMelodyURLUseCase
+    private let saveMelodyURLUseCase: SaveMelodyURLUseCase
+    
 
     private var allStops: [Stop] = []
     private var stopGrid: [GridKey: [Stop]] = [:]
@@ -77,7 +82,9 @@ final class MapViewModel: ObservableObject {
         buildStopGridUseCase: BuildStopGridUseCase,
         playHapticUseCase: PlayHapticFeedbackUseCase,
         monitoringPersistence: MonitoringPersistenceUseCase,
-        findNearestStopUseCase: FindNearestStopUseCase
+        findNearestStopUseCase: FindNearestStopUseCase,
+        loadMelodyURLUseCase: LoadMelodyURLUseCase,
+        saveMelodyURLUseCase: SaveMelodyURLUseCase
     ) {
         self.locationCoordination = locationCoordination
         self.loadStopsUseCase = loadStopsUseCase
@@ -88,6 +95,8 @@ final class MapViewModel: ObservableObject {
         self.playHapticUseCase = playHapticUseCase
         self.monitoringPersistence = monitoringPersistence
         self.findNearestStopUseCase = findNearestStopUseCase
+        self.loadMelodyURLUseCase = loadMelodyURLUseCase
+        self.saveMelodyURLUseCase = saveMelodyURLUseCase
 
         startedMonitoringsIDs = monitoringPersistence.loadStartedMonitoringIds()
         oldMonitoringsCoordinate = monitoringPersistence.loadOldMonitorings()
@@ -96,6 +105,19 @@ final class MapViewModel: ObservableObject {
         setupBindings()
         loadInitialStops()
         locationCoordination.requestWhenInUseAuthorization()
+        loadMelodyURL()
+    }
+    
+    func assignActiveSheet(sheet: ActiveSheet?) {
+        activeSheet = sheet
+    }
+    
+    func saveMelodyURL(url: URL?) {
+        saveMelodyURLUseCase.execute(url: url)
+    }
+    
+    func loadMelodyURL() {
+        melodyURL = loadMelodyURLUseCase.execute()
     }
 
     private func subscribeToLocationStreams() {

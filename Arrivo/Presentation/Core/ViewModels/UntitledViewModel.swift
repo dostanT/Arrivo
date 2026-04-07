@@ -11,9 +11,11 @@ final class UntitledViewModel: ObservableObject {
     @Published var launchCount: Int = 0
     @Published var overViewShown: Bool = false
     @Published var selectedTab: TabEnum = .map
-
+    
+    
+    
     private let appLaunchCoordinator: AppLaunchCoordinatorUseCase
-
+    
     init(appLaunchCoordinator: AppLaunchCoordinatorUseCase) {
         self.appLaunchCoordinator = appLaunchCoordinator
         Task {
@@ -23,10 +25,13 @@ final class UntitledViewModel: ObservableObject {
                 self.overViewShown = snapshot.overViewShown
             }
         }
+      
     }
-
+    
     func trueOverViewShown() {
         appLaunchCoordinator.markOverViewShown()
         overViewShown = true
     }
+    
+   
 }

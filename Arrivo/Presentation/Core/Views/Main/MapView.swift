@@ -15,8 +15,13 @@ struct MapView: View {
                 if mapVM.selectedCoordinate != nil {
                     HStack {
                         Spacer()
-                        CircleButton(imageName: "checkmark") {
-                            print("Check")
+                        VStack {
+                            CircleButton(imageName: "music.note") {
+                                mapVM.assignActiveSheet(sheet: .melodyChoose)
+                            }
+                            CircleButton(imageName: "exclamationmark.bubble") {
+                                print("Report")
+                            }
                         }
                     }
                     Slider(value: $mapVM.radius, in: 100 ... 1000, step: 100)

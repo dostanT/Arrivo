@@ -8,6 +8,8 @@
 enum ActiveSheet: Identifiable {
     case oldMonitorings
     case startedMonitorings
+    case melodyChoose
+    case reportProblem
 
     var id: Int {
         hashValue

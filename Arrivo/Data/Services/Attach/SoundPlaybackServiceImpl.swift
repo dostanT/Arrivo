@@ -7,25 +7,42 @@ import AVFoundation
 
 final class SoundPlaybackServiceImpl: SoundPlaybackProtocol {
     private var player: AVAudioPlayer?
-
+    
     init() {}
-
+    
     func playAlarmSound() async {
-        await MainActor.run {
-            setupAudioSession()
+        await MainActor.run { [weak self] in
+            self?.setupAudioSession()
             guard let url = Bundle.main.url(forResource: "lesiakower-chiptune-alarm-clock", withExtension: "mp3") else {
                 return
             }
             do {
-                player = try AVAudioPlayer(contentsOf: url)
-                player?.numberOfLoops = -1
-                player?.play()
+                self?.player = try AVAudioPlayer(contentsOf: url)
+                self?.player?.numberOfLoops = -1
+                self?.player?.play()
             } catch {
                 print("Play error:", error)
             }
         }
     }
-
+    
+    func play(url: URL) async {
+        await MainActor.run { [weak self] in
+            self?.setupAudioSession()
+            do {
+                self?.player = try AVAudioPlayer(contentsOf: url)
+                self?.player?.prepareToPlay()
+                self?.player?.play()
+            } catch {
+                print("Ошибка воспроизведения:", error)
+            }
+        }
+    }
+    
+    func stop() {
+        player?.stop()
+    }
+    
     private func setupAudioSession() {
         let session = AVAudioSession.sharedInstance()
         do {
