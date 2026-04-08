@@ -45,8 +45,8 @@ final class AlarmService {
             metadata: TimerData(duration: duration, label: label),
             tintColor: .accentColor
         )
-
         let sound = AlertConfiguration.AlertSound.default
+//        let sound = AlertConfiguration.AlertSound.named("lesiakower-chiptune-alarm-clock.mp3")
         let alarmConfiguration = AlarmConfiguration(
             countdownDuration: .init(preAlert: duration, postAlert: nil),
             attributes: attributes,
